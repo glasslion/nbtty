@@ -14,8 +14,10 @@ def run(cmd, daemon=False, split=True):
 
 
 class TTY(object):
-    base_dir = '/tmp/jupyter-tty'
-    gotty_port = 18080
+    def __init__(self, base_dir=None, gotty_port=18080, gotty_opts=None):
+        self.base_dir = base_dir or '/tmp/jupyter-tty'
+        self.gotty_port = gotty_port
+        self.gotty_opts = gotty_opts or '-w'
 
     def install(self):
         base_dir = self.base_dir
@@ -34,14 +36,13 @@ class TTY(object):
         if not os.path.exists(gotty_bin):
             run(f'tar xvf {gotty_zip} -C {base_dir}')
 
-
     def start(self):
         base_dir = self.base_dir
         port = self.gotty_port
         self.install()
         self.stop()
         gotty_bin = os.path.join(base_dir, 'gotty')
-        run(f'{gotty_bin} -p {port} -w bash', daemon=True)
+        run(f'{gotty_bin} -p {port} -{self.gotty_opts} bash', daemon=True)
         ngrok_bin = os.path.join(base_dir, 'ngrok')
         run(f'{ngrok_bin} http {port}', daemon=True)
 
