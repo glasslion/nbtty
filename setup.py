@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="nbtty",
-    version="1.0.0",
+    version="1.0.1",
     author="Leonardo Zhou",
     author_email="glasslion@gmail.com.com",
     description="Run web tty from jupyter notebooks",
